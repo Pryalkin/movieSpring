@@ -47,7 +47,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf().disable().cors().and()
                 .sessionManagement().sessionCreationPolicy(STATELESS)
-                .and().authorizeHttpRequests().requestMatchers("/user/login", "/user/registration").permitAll()
+                .and().authorizeHttpRequests().requestMatchers("/auth/login", "/auth/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
