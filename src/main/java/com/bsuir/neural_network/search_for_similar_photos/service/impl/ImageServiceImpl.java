@@ -8,6 +8,11 @@ import com.bsuir.neural_network.search_for_similar_photos.repository.KeywordRepo
 import com.bsuir.neural_network.search_for_similar_photos.service.ImageService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +51,35 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public List<ImageAnswerDTO> getAll() {
         return imageRepository.findAll().stream().map(this::createImageAnswerDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ImageAnswerDTO> similarImageSearch(MultipartFile file) throws IOException {
+        byte[] bytes = file.getBytes();
+        Mat img1 = Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
+        return imageRepository.findAll().stream().filter(image -> {
+            try {
+                byte[] imageBytes = Files.readAllBytes(Paths.get(USER_FOLDER + FORWARD_SLASH + image.getName() + DOT + JPG_EXTENSION));
+                Mat img2 =  Imgcodecs.imdecode(new MatOfByte(imageBytes), Imgcodecs.IMREAD_UNCHANGED);
+                // Convert to grayscale
+                Imgproc.cvtColor(img1, img1, Imgproc.COLOR_BGR2GRAY);
+                Imgproc.cvtColor(img2, img2, Imgproc.COLOR_BGR2GRAY);
+
+                // Match template
+                Mat result = new Mat();
+                Imgproc.matchTemplate(img1, img2, result, Imgproc.TM_CCOEFF_NORMED);
+
+                // Find best match
+                Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+                double matchScore = mmr.maxVal;
+                int matchX = (int)mmr.maxLoc.x;
+                int matchY = (int)mmr.maxLoc.y;
+                if (matchScore > 0) return true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return false;
+        }).map(this::createImageAnswerDTO).collect(Collectors.toList());
     }
 
     private ImageAnswerDTO createImageAnswerDTO(Image image) {

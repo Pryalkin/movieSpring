@@ -10,4 +10,6 @@ public interface ImageService {
     void upload(String keywords, MultipartFile file) throws IOException;
 
     List<ImageAnswerDTO> getAll();
+
+    List<ImageAnswerDTO> similarImageSearch(MultipartFile file) throws IOException;
 }

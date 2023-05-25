@@ -49,5 +49,10 @@ public class ImageController {
         return new ResponseEntity<>(imageService.getAll(), OK);
     }
 
+    @PostMapping("/similar_image_search")
+    public ResponseEntity<List<ImageAnswerDTO>> similarImageSearch(@RequestParam(value = "file") MultipartFile file) throws IOException {
+        return new ResponseEntity<>(imageService.similarImageSearch(file), OK);
+    }
+
 
 }
