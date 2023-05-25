@@ -1,6 +1,6 @@
 package com.bsuir.neural_network.search_for_similar_photos.repository;
 
-import com.bsuir.neural_network.search_for_similar_photos.model.User;
+import com.bsuir.neural_network.search_for_similar_photos.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

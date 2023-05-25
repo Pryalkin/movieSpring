@@ -1,4 +1,4 @@
-package com.bsuir.neural_network.search_for_similar_photos.model;
+package com.bsuir.neural_network.search_for_similar_photos.model.user;
 
 import jakarta.persistence.*;
 import lombok.*;

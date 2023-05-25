@@ -1,5 +1,6 @@
-package com.bsuir.neural_network.search_for_similar_photos.model;
+package com.bsuir.neural_network.search_for_similar_photos.model.user;
 
+import com.bsuir.neural_network.search_for_similar_photos.model.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
