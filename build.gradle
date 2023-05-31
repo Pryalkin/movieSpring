@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -36,9 +37,7 @@ dependencies {
 //	implementation 'org.tensorflow:tensorflow:2.0.0'
 	implementation 'com.google.code.gson:gson:2.8.5'
 
-//	implementation group: 'org.openpnp', name: 'opencv', version: '4.7.0-0'
-
-
+	implementation group: 'org.openpnp', name: 'opencv', version: '4.7.0-0'
 
 }
 

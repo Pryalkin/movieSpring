@@ -1,5 +1,6 @@
 package com.bsuir.neural_network.search_for_similar_photos.model;
 
+import com.bsuir.neural_network.search_for_similar_photos.model.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Image {
     private String name;
     @EqualsAndHashCode.Include
     private String url;
+    private String groupName;
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -32,11 +34,12 @@ public class Image {
             inverseJoinColumns = @JoinColumn(name = "keyword_id")
     )
     private Set<Keyword> keywords = new HashSet<>();
+    @ManyToMany(mappedBy = "images")
+    private Set<User> users = new HashSet<>();
 
     public void addKeyword(Keyword keyword){
         keywords.add(keyword);
         keyword.getImages().add(this);
     }
-
 
 }

@@ -1,6 +1,7 @@
 package com.bsuir.neural_network.search_for_similar_photos.service.impl;
 
 import com.bsuir.neural_network.search_for_similar_photos.dto.UserDTO;
+import com.bsuir.neural_network.search_for_similar_photos.enumeration.Role;
 import com.bsuir.neural_network.search_for_similar_photos.exception.model.PasswordException;
 import com.bsuir.neural_network.search_for_similar_photos.exception.model.UsernameExistException;
 import com.bsuir.neural_network.search_for_similar_photos.model.user.User;
@@ -58,6 +59,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User findByUsername(String username) throws UsernameExistException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameExistException(USERNAME_ALREADY_EXISTS));
+    }
+
+    @Override
+    public void subscribe(String usernameWithToken) throws UsernameExistException {
+        User user = findByUsername(usernameWithToken);
+        user.setRole(Role.ROLE_SUBSCRIBER.name());
+        user.setAuthorities(Role.ROLE_SUBSCRIBER.getAuthorities());
+        userRepository.save(user);
     }
 
     private void validateNewUsernameAndPassword(UserDTO userDTO) throws UsernameExistException, PasswordException {

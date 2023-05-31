@@ -9,4 +9,6 @@ public interface UserService {
 
     void registration(UserDTO userDTO) throws UsernameExistException, PasswordException;
     User findByUsername(String username) throws UsernameExistException;
+
+    void subscribe(String usernameWithToken) throws UsernameExistException;
 }
