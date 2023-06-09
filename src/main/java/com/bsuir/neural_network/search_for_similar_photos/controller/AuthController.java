@@ -1,7 +1,7 @@
 package com.bsuir.neural_network.search_for_similar_photos.controller;
 
 import com.bsuir.neural_network.search_for_similar_photos.constant.HttpAnswer;
-import com.bsuir.neural_network.search_for_similar_photos.dto.UserDTO;
+import com.bsuir.neural_network.search_for_similar_photos.dto.LoginUserDTO;
 import com.bsuir.neural_network.search_for_similar_photos.dto.answer.LoginUserAnswerDTO;
 import com.bsuir.neural_network.search_for_similar_photos.dto.util.HttpResponse;
 import com.bsuir.neural_network.search_for_similar_photos.exception.ExceptionHandling;
@@ -36,15 +36,15 @@ public class AuthController extends ExceptionHandling {
     private final JWTTokenProvider jwtTokenProvider;
 
     @PostMapping("/registration")
-    public ResponseEntity<HttpResponse> registration(@RequestBody UserDTO userDTO) throws UsernameExistException, PasswordException {
-        userService.registration(userDTO);
+    public ResponseEntity<HttpResponse> registration(@RequestBody LoginUserDTO loginUserDTO) throws UsernameExistException, PasswordException {
+        userService.registration(loginUserDTO);
         return HttpAnswer.response(CREATED, USER_SUCCESSFULLY_REGISTERED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginUserAnswerDTO> login(@RequestBody UserDTO userDTO) throws UsernameExistException {
-        authenticate(userDTO.getUsername(), userDTO.getPassword());
-        User loginUser = userService.findByUsername(userDTO.getUsername());
+    public ResponseEntity<LoginUserAnswerDTO> login(@RequestBody LoginUserDTO loginUserDTO) throws UsernameExistException {
+        authenticate(loginUserDTO.getUsername(), loginUserDTO.getPassword());
+        User loginUser = userService.findByUsername(loginUserDTO.getUsername());
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
         LoginUserAnswerDTO loginUserAnswerDTO = new LoginUserAnswerDTO();

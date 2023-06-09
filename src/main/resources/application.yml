@@ -2,11 +2,11 @@ server:
   port: 8080
 
 jwt:
-  secret: 'BugTS_secret'
+  secret: 'secret_key'
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/search_for_similar_photos
+    url: jdbc:postgresql://localhost:5432/passport
     username: postgres
     password: root
   jpa:
